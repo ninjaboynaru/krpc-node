@@ -10,15 +10,17 @@ describe('Getting Started - async', function() {
         try {
             let response = await client.send(spaceCenter.getActiveVessel());
             let vessel = response.results[0].value;
-            response = await spaceCenter._vesselGetControl(vessel.id);
-            let control = response.results[0].value;
+
+            let control = await spaceCenter._vesselGetControl(vessel.id);
             expect(control).to.be.ok();
+
             let control2 = await vessel.control;
             expect(control2).to.be.ok();
+
 			control.sas = true;
-			response = await control.sas;
-			let sasState = response.results[0].value;
+			let sasState = await control.sas;
 			expect(sasState).to.be.equal(true);
+
         } catch (err) {
             await client.close();
             throw err;
